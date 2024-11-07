@@ -4,14 +4,15 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET(req: NextRequest){
 
     const { searchParams } = new URL(req.url); 
-    const libraryId = process.env.LIBRARY_ID;
+    
     const uniqueId = searchParams.get('uniqueId');
 
-    if(!libraryId || !uniqueId){
-        return NextResponse.json({ error: 'Missing libraryId or uniqueId' }, { status: 400 });
+    if(!uniqueId){
+        return NextResponse.json({ error: 'Missing uniqueId' }, { status: 400 });
     }
 
     try {
+        const libraryId = process.env.LIBRARY_ID;
         const response = await axios.post(`https://video.bunnycdn.com/library/${libraryId}/collections`,
             {
                 name: uniqueId
